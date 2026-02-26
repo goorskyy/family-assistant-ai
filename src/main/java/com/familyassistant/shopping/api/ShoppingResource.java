@@ -1,6 +1,6 @@
-package com.familyassistant.shopping;
+package com.familyassistant.shopping.api;
 
-import com.familyassistant.ai.GeminiService;
+import com.familyassistant.shopping.application.ShoppingSortUseCase;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -14,12 +14,11 @@ import jakarta.ws.rs.core.MediaType;
 public class ShoppingResource {
 
     @Inject
-    GeminiService geminiService;
+    ShoppingSortUseCase sortUseCase;
 
     @POST
     @Path("/sort")
     public SortResponse sort(SortRequest request) {
-        var sorted = geminiService.sortForStore(request.items(), request.storeProfile());
-        return new SortResponse(sorted);
+        return new SortResponse(sortUseCase.sort(request.items(), request.storeProfile()));
     }
 }

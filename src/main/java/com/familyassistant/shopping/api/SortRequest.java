@@ -1,4 +1,6 @@
-package com.familyassistant.shopping;
+package com.familyassistant.shopping.api;
+
+import com.familyassistant.shopping.domain.ShoppingItem;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.familyassistant.auth;
+package com.familyassistant.common.auth;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;

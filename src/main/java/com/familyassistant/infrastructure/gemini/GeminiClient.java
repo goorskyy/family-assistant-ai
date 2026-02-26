@@ -1,4 +1,4 @@
-package com.familyassistant.ai;
+package com.familyassistant.infrastructure.gemini;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -14,7 +14,7 @@ import java.util.List;
 @Path("/v1beta/models/gemini-2.0-flash:generateContent")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public interface GeminiClient {
+interface GeminiClient {
 
     @POST
     GeminiResponse generate(@QueryParam("key") String apiKey, GeminiRequest request);

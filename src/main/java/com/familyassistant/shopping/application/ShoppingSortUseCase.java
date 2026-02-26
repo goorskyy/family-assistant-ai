@@ -1,34 +1,30 @@
-package com.familyassistant.ai;
+package com.familyassistant.shopping.application;
 
-import com.familyassistant.shopping.ShoppingItem;
+import com.familyassistant.core.ai.AiPort;
+import com.familyassistant.shopping.domain.ShoppingItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class GeminiService {
+public class ShoppingSortUseCase {
 
-    private static final Logger LOG = Logger.getLogger(GeminiService.class);
+    private static final Logger LOG = Logger.getLogger(ShoppingSortUseCase.class);
 
-    @RestClient
-    GeminiClient geminiClient;
+    @Inject
+    AiPort aiPort;
 
     @Inject
     ObjectMapper objectMapper;
 
-    @ConfigProperty(name = "gemini.api-key")
-    String apiKey;
-
-    public List<ShoppingItem> sortForStore(List<ShoppingItem> items, String storeProfile) {
+    public List<ShoppingItem> sort(List<ShoppingItem> items, String storeProfile) {
         var prompt = buildPrompt(items, storeProfile);
-        var response = geminiClient.generate(apiKey, GeminiClient.GeminiRequest.of(prompt));
-        return parseSortedItems(response.text(), items);
+        var response = aiPort.complete(prompt);
+        return parseSortedItems(response, items);
     }
 
     private String buildPrompt(List<ShoppingItem> items, String storeProfile) {
@@ -46,7 +42,6 @@ public class GeminiService {
 
     private List<ShoppingItem> parseSortedItems(String text, List<ShoppingItem> original) {
         try {
-            // Strip markdown code fences if present
             var cleaned = text.strip().replaceAll("(?s)```.*?\\n", "").replace("```", "").strip();
             int[] indices = objectMapper.readValue(cleaned, int[].class);
             var sorted = new ArrayList<ShoppingItem>(indices.length);
@@ -55,7 +50,6 @@ public class GeminiService {
                     sorted.add(original.get(idx));
                 }
             }
-            // Append any items not included in the AI response (safety net)
             if (sorted.size() < original.size()) {
                 for (int i = 0; i < original.size(); i++) {
                     int finalI = i;
@@ -66,7 +60,7 @@ public class GeminiService {
             }
             return sorted;
         } catch (Exception e) {
-            LOG.warnf("Failed to parse Gemini response, returning original order: %s", e.getMessage());
+            LOG.warnf("Failed to parse AI response, returning original order: %s", e.getMessage());
             return original;
         }
     }
