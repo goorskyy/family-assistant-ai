@@ -22,6 +22,10 @@ public class GoogleTokenFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext ctx) {
+        if ("OPTIONS".equalsIgnoreCase(ctx.getMethod())) {
+            return; // Allow CORS preflight requests through
+        }
+
         var path = ctx.getUriInfo().getPath();
         if (path.startsWith("/q/")) {
             return; // Skip Quarkus dev endpoints (health, OpenAPI, Swagger)
