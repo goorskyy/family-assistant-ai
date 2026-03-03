@@ -7,9 +7,9 @@ on:
 
 env:
   PROJECT_ID: family-assistant-f9589
-  REGION: europe-west1
+  REGION: europe-central2
   SERVICE: family-assistant-ai
-  IMAGE: europe-west1-docker.pkg.dev/family-assistant-f9589/family-assistant/family-assistant-ai
+  IMAGE: europe-central2-docker.pkg.dev/family-assistant-f9589/family-assistant/family-assistant-ai
 
 jobs:
   build_and_deploy:
