@@ -31,10 +31,10 @@ public class ShoppingSortUseCase {
         var sb = new StringBuilder();
         sb.append("You are a grocery shopping assistant. Sort the following shopping list in the most efficient order for navigating the store.\n\n");
         sb.append("Store layout: ").append(storeProfile).append("\n\n");
-        sb.append("Shopping list (0-based index, name, category):\n");
+        sb.append("Shopping list (0-based index, name):\n");
         for (int i = 0; i < items.size(); i++) {
             var item = items.get(i);
-            sb.append(i).append(". ").append(item.name()).append(" [").append(item.category()).append("]\n");
+            sb.append(i).append(". ").append(item.name()).append("\n");
         }
         sb.append("\nReturn ONLY a JSON array of the 0-based indices in the optimal shopping order. Example: [2,0,3,1]");
         return sb.toString();

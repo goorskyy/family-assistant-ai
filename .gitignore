@@ -39,7 +39,15 @@ nb-configuration.xml
 # Local environment
 .env
 
+# GCP credentials
+key.json
+*-key.json
+service-account*.json
+
 # Plugin directory
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+
+# Google Cloud SDK
+google-cloud-sdk/
